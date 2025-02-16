@@ -5,20 +5,16 @@ import { HiLocationMarker } from "react-icons/hi";
 import SearchBox from "./SearchBox";
 
 export default function NavBar() {
-  // Create a state variable for the search input value
   const [searchValue, setSearchValue] = useState("");
 
-  // Handle change in the search input
   const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
     e
   ) => {
     setSearchValue(e.target.value);
   };
 
-  // Handle the form submission
   const handleSearchSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    // Your logic for submitting the search can go here
     console.log("Search value:", searchValue);
   };
 
@@ -31,7 +27,6 @@ export default function NavBar() {
           <HiLocationMarker className="text-gray-400 text-2xl hover:opacity-80 cursor-pointer" />
           <p className="text-gray-300">Nepal</p>
           <div>
-            {/* Pass value, onChange, and onSubmit to SearchBox */}
             <SearchBox
               value={searchValue}
               onChange={handleSearchChange}

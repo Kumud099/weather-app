@@ -1,6 +1,7 @@
 "use client";
 import NavBar from "@/components/NavBar";
 import axios from "axios";
+import SplashScreen from "@/components/SplashScreen";
 
 import { useQuery } from "@tanstack/react-query";
 type WeatherData = {
@@ -77,23 +78,25 @@ export default function Home() {
     queryKey: ["repoData"],
     queryFn: async () => {
       const { data } = await axios.get(
-        "https://api.openweathermap.org/data/2.5/forecast?q=kathmandu&appid=7f8e4b54e3eaf20f766f2060e2cce60d&cnt=52"
+        `https://api.openweathermap.org/data/2.5/forecast?q=kathmandu&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}&cnt=52`
       );
       return data;
     },
-    // fetch(
-    //   "https://api.openweathermap.org/data/2.5/forecast?q=kathmandu&appid=7f8e4b54e3eaf20f766f2060e2cce60d&cnt=52"
-    // ).then((res) => res.json()),
   });
 
-  if (isPending) return "Loading...";
+  if (isPending)
+    return (
+      <div className="flex items-center justify-center bg-[#442b5b] min-h-screen text-gray-100">
+        <p className="animate-pulse ">Is Loading...</p>
+      </div>
+    );
 
-  console.log("data", data);
+  console.log("data", data?.city.country);
+  console.log("API Key:", process.env.NEXT_PUBLIC_WEATHER_KEY); // Check if the API key is correctly loaded
 
   return (
-    <div className="bg-[#442b5b] min-h-screen flex flex-col">
+    <div className="bg-gradient-to-tr from-[#20204f] via-[#4b1e4b] to-[#511633] min-h-screen flex flex-col">
       <NavBar />
     </div>
   );
 }
-//'https://api.openweathermap.org/data/2.5/forecast?q=kathmandu&appid=7f8e4b54e3eaf20f766f2060e2cce60d&cnt=2'
