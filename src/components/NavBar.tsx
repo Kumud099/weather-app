@@ -1,23 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { MdMyLocation } from "react-icons/md";
 import { HiLocationMarker } from "react-icons/hi";
 import SearchBox from "./SearchBox";
 
-export default function NavBar() {
-  const [searchValue, setSearchValue] = useState("");
+type NavBarProps = {
+  searchValue: string;
+  onSearchChange: React.ChangeEventHandler<HTMLInputElement>;
+  onSearchSubmit: React.FormEventHandler<HTMLFormElement>;
+};
 
-  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
-    e
-  ) => {
-    setSearchValue(e.target.value);
-  };
-
-  const handleSearchSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    console.log("Search value:", searchValue);
-  };
-
+export default function NavBar({
+  searchValue,
+  onSearchChange,
+  onSearchSubmit,
+}: NavBarProps) {
   return (
     <nav className="shadow-sm sticky top-0 left-0 z-50 text-white py-4">
       <div className="w-full flex justify-between items-center max-w-7xl px-3 mx-auto">
@@ -25,14 +22,12 @@ export default function NavBar() {
         <section className="flex gap-2 items-center bg-center">
           <MdMyLocation className="text-gray-400 text-2xl hover:opacity-80 cursor-pointer" />
           <HiLocationMarker className="text-gray-400 text-2xl hover:opacity-80 cursor-pointer" />
-          <p className="text-gray-300">Nepal</p>
-          <div>
-            <SearchBox
-              value={searchValue}
-              onChange={handleSearchChange}
-              onSubmit={handleSearchSubmit}
-            />
-          </div>
+          {/* <p className="text-gray-300">Nepal</p> */}
+          <SearchBox
+            value={searchValue}
+            onChange={onSearchChange}
+            onSubmit={onSearchSubmit}
+          />
         </section>
       </div>
     </nav>
