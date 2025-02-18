@@ -4,8 +4,81 @@ import { useState } from "react";
 import NavBar from "@/components/NavBar";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { format, parseISO } from "date-fns";
+import { format, fromUnixTime, parseISO } from "date-fns";
 import { convertKelvinToCelsius } from "@/utils/convertKelvinToCelsius";
+import Container from "@/components/Container";
+import ForecastWeatherDetail from "@/components/ForecastWeatherDetail";
+import WeatherDetails from "@/components/WeatherDetails";
+import convertMetersToKm from "@/utils/convertMetersToKm";
+
+interface WeatherData {
+  cod: string;
+  message: number;
+  cnt: number;
+  list: WeatherEntry[];
+  city: City;
+}
+
+interface WeatherEntry {
+  dt: number;
+  main: MainWeather;
+  weather: WeatherDescription[];
+  clouds: Clouds;
+  wind: Wind;
+  visibility: number;
+  pop: number;
+  sys: Sys;
+  dt_txt: string;
+}
+
+interface MainWeather {
+  temp: number;
+  feels_like: number;
+  temp_min: number;
+  temp_max: number;
+  pressure: number;
+  sea_level: number;
+  grnd_level: number;
+  humidity: number;
+  temp_kf: number;
+}
+
+interface WeatherDescription {
+  id: number;
+  main: string;
+  description: string;
+  icon: string;
+}
+
+interface Clouds {
+  all: number;
+}
+
+interface Wind {
+  speed: number;
+  deg: number;
+  gust: number;
+}
+
+interface Sys {
+  pod: string;
+}
+
+interface City {
+  id: number;
+  name: string;
+  coord: Coordinates;
+  country: string;
+  population: number;
+  timezone: number;
+  sunrise: number;
+  sunset: number;
+}
+
+interface Coordinates {
+  lat: number;
+  lon: number;
+}
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState("");
@@ -21,7 +94,7 @@ export default function Home() {
     setSubmittedValue(searchValue);
   };
 
-  const { isPending, error, data } = useQuery({
+  const { isPending, data } = useQuery<WeatherData>({
     queryKey: ["repoData"],
     queryFn: async () => {
       const { data } = await axios.get(
@@ -43,7 +116,7 @@ export default function Home() {
     );
 
   return (
-    <div className="bg-gradient-to-tr from-[#20204f] via-[#4b1e4b] to-[#511633] min-h-screen flex flex-col">
+    <div className="bg-gradient-to-tr from-[#5050b0] via-[#80387d] via-70% to-[#672746] min-h-screen flex flex-col">
       <div>
         <NavBar
           searchValue={searchValue}
@@ -57,7 +130,7 @@ export default function Home() {
           className="flex gap-1 text2xl items-end text-white relative border-none rounded-2xl"
           style={{ backgroundImage: "url('/images/background-image.jpg')" }}
         >
-          <div className="flex flex-col  ">
+          <div className="flex flex-col">
             <div className="pt-10 pl-20 flex-1  ">
               <span className="text-9xl">
                 {convertKelvinToCelsius(firstDate?.main.temp ?? 0)}°
@@ -66,6 +139,18 @@ export default function Home() {
                 Feels like{" "}
                 {convertKelvinToCelsius(firstDate?.main.feels_like ?? 0)}°
               </span>
+              <div className="flex flex-col text-2xl text-right pb-10 absolute right-0 -bottom-0 transform -translate-y-1/2 pr-10">
+                {/* Weather Icon */}
+                <img
+                  src={`https://openweathermap.org/img/wn/${firstDate?.weather[0]?.icon}@2x.png`}
+                  alt={firstDate?.weather[0]?.description || "Weather icon"}
+                  className="w-15 h-15"
+                />
+                {/* Weather Description */}
+                <p className="text-sm text-white capitalize ">
+                  ({firstDate?.weather[0]?.description || "No description"})
+                </p>
+              </div>
             </div>
             <div className="flex flex-col justify-center pl-10 pt-10  pb-5">
               <p className="text-ellipsis text-2xl">{city}</p>
@@ -85,8 +170,62 @@ export default function Home() {
             </div>
           </div>
         </section>
+        {/* time and weather icon */}
+        <section>
+          <Container className="flex gap-1 text-2xl items-center">
+            <div className="flex gap-10 sm:gap-15 overflow-x-auto w-full justify-between pr-3">
+              {data?.list.map((entry, i) => (
+                <div
+                  key={i}
+                  className="px-5 flex flex-col justify-center items-center gap-2 text-xs font-semibold"
+                >
+                  {/* Time */}
+                  <p className="whitespace-nowrap text-center">
+                    {format(parseISO(entry.dt_txt), "h:mm a")}
+                  </p>
+
+                  {/* Weather Icon */}
+                  <img
+                    src={`https://openweathermap.org/img/wn/${entry.weather[0]?.icon}@2x.png`}
+                    alt={entry.weather[0]?.description || "Weather icon"}
+                    className="w-12 h-12"
+                  />
+
+                  {/* Weather Condition */}
+                  <p className="capitalize text-center">
+                    {entry.weather[0]?.description}
+                  </p>
+
+                  {/* Temperature */}
+                  <p className="text-center">
+                    {convertKelvinToCelsius(entry?.main.temp ?? 0)}°
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Container>
+          <Container className="px-6 gap-4 justify-between overflow-x-auto flex">
+            <WeatherDetails
+              visibility={convertMetersToKm(firstDate?.visibility ?? 100000)}
+              airPressure={`${firstDate?.main.pressure} hPa`}
+              humidity={`${firstDate?.main.humidity} %`}
+              windSpeed={`${firstDate?.wind.speed}km/hr`}
+              sunrise={format(
+                fromUnixTime(data?.city.sunrise ?? 1739753681),
+                "H:mm "
+              )}
+              sunset={format(
+                fromUnixTime(data?.city.sunset ?? 1739753681),
+                "H:mm "
+              )}
+            />
+          </Container>
+        </section>
         {/* 7 days forecast data */}
-        <section></section>
+        <section className="flex flex-col w-full">
+          <p className=" text-white text-2xl">Forecast (7 days)</p>
+          <ForecastWeatherDetail></ForecastWeatherDetail>
+        </section>
       </main>
     </div>
   );
