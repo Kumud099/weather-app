@@ -6,14 +6,14 @@ import { BsSpeedometer } from "react-icons/bs";
 import { GiSunrise } from "react-icons/gi";
 import { GiSunset } from "react-icons/gi";
 
-type WeatherDetailsProps = {
+export interface WeatherDetailsProps {
   visibility: string;
   humidity: string;
   windSpeed: string;
   airPressure: string;
   sunrise: string;
   sunset: string;
-};
+}
 
 export default function WeatherDetails(props: WeatherDetailsProps) {
   const {
@@ -33,37 +33,37 @@ export default function WeatherDetails(props: WeatherDetailsProps) {
       gap-6
       w-full
       overflow-x-auto
-      p-4"
+      p-4 "
     >
       <SingleWeatherDetails
-        icon={<FaEye />}
+        icon={<FaEye style={{ color: "#d9ab56" }} />}
         information="Visibility"
         value={visibility}
       />
       <SingleWeatherDetails
-        icon={<FiDroplet />}
+        icon={<FiDroplet style={{ color: "#21cae2" }} />}
         information="Humidity"
         value={humidity}
       />
       <SingleWeatherDetails
-        icon={<FaWind />}
+        icon={<FaWind style={{ color: "#f1dede" }} />}
         information="Wind Speed"
         value={windSpeed}
       />
       <SingleWeatherDetails
-        icon={<BsSpeedometer />}
+        icon={<BsSpeedometer style={{ color: "#000000" }} />}
         information="Air Pressure"
         value={airPressure}
       />
       <SingleWeatherDetails
-        icon={<GiSunrise />}
+        icon={<GiSunrise style={{ color: "#ede11a" }} />}
         information="Sunrise"
-        value={props.sunrise}
+        value={sunrise}
       />
       <SingleWeatherDetails
-        icon={<GiSunset />}
+        icon={<GiSunset style={{ color: "#edb61a" }} />}
         information="Sunset"
-        value={props.sunset}
+        value={sunset}
       />
     </div>
   );
@@ -77,8 +77,8 @@ export interface SingleWeatherDetailProps {
 
 function SingleWeatherDetails(props: SingleWeatherDetailProps) {
   return (
-    <div className="flex flex-col justify-between gap-2 items-center text-xs font-semibold text-black/80">
-      <p className="whitespace-nowrap">{props.information}</p>
+    <div className="flex flex-col justify-between gap-2 items-center text-xs font-semibold">
+      <p className="whitespace-nowrap ">{props.information}</p>
       <div className="text-3xl">{props.icon}</div>
       <p>{props.value}</p>
     </div>
