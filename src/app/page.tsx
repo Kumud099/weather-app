@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import NavBar from "@/components/NavBar";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
@@ -84,15 +84,15 @@ interface Coordinates {
 }
 
 export default function Home() {
-  const [searchValue, setSearchValue] = useState("");
-  const [, setSubmittedValue] = useState("");
+  // const [, setSearchValue] = useState("");
+
   const [place] = useAtom(placeAtom);
   const [loadingCity] = useAtom(loadingCityAtom);
-  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
-    e
-  ) => {
-    setSearchValue(e.target.value);
-  };
+  // const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
+  //   e
+  // ) => {
+  //   setSearchValue(e.target.value);
+  // };
 
   // const handleSearchSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
   //   e.preventDefault();
