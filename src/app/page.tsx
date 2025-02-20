@@ -163,17 +163,23 @@ export default function Home() {
                     Feels like{" "}
                     {convertKelvinToCelsius(firstDate?.main.feels_like ?? 0)}°
                   </span>
-                  <div className="flex flex-col text-2xl text-right pb-10 absolute right-0 -bottom-0 transform -translate-y-1/2 pr-10">
-                    {/* Weather Icon */}
-                    <img
-                      src={`https://openweathermap.org/img/wn/${firstDate?.weather[0]?.icon}@2x.png`}
-                      alt={firstDate?.weather[0]?.description || "Weather icon"}
-                      className="w-15 h-15"
-                    />
-                    {/* Weather Description */}
-                    <p className="text-sm text-white capitalize ">
-                      ({firstDate?.weather[0]?.description || "No description"})
-                    </p>
+                  <div className="hidden lg:block">
+                    <div className="flex flex-col text-2xl text-right pb-10 absolute right-0 -bottom-0 transform -translate-y-1/2 pr-10">
+                      {/* Weather Icon */}
+                      <img
+                        src={`https://openweathermap.org/img/wn/${firstDate?.weather[0]?.icon}@2x.png`}
+                        alt={
+                          firstDate?.weather[0]?.description || "Weather icon"
+                        }
+                        className="w-15 h-15"
+                      />
+                      {/* Weather Description */}
+                      <p className="text-sm text-white capitalize">
+                        (
+                        {firstDate?.weather[0]?.description || "No description"}
+                        )
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col justify-center pl-10 pt-10  pb-5">
