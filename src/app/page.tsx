@@ -85,19 +85,19 @@ interface Coordinates {
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState("");
-  const [submittedValue, setSubmittedValue] = useState("");
-  const [place, setPlace] = useAtom(placeAtom);
-  const [loadingCity, setLoadingCity] = useAtom(loadingCityAtom);
+  const [, setSubmittedValue] = useState("");
+  const [place] = useAtom(placeAtom);
+  const [loadingCity] = useAtom(loadingCityAtom);
   const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
     e
   ) => {
     setSearchValue(e.target.value);
   };
 
-  const handleSearchSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    setSubmittedValue(searchValue);
-  };
+  // const handleSearchSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  //   e.preventDefault();
+  //   setSubmittedValue(searchValue);
+  // };
 
   const { isPending, data, refetch } = useQuery<WeatherData>({
     queryKey: ["repoData"],
