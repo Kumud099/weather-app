@@ -23,7 +23,6 @@ export default function ForecastWeatherDetail(
     day = "Monday",
     temp,
     feels_like,
-
     description = "Weather Icon",
   } = props;
   return (
