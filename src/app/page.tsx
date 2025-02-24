@@ -13,6 +13,8 @@ import convertMetersToKm from "@/utils/convertMetersToKm";
 import convertWindSpeed from "@/utils/convertWindSpeed";
 import { useAtom } from "jotai";
 import { loadingCityAtom, placeAtom } from "./atom";
+import { ThemeToggle } from "./theme-toogle";
+import WeatherSkeleton from "@/components/WeatherSkeleton";
 
 interface WeatherData {
   cod: string;
@@ -84,20 +86,8 @@ interface Coordinates {
 }
 
 export default function Home() {
-  // const [, setSearchValue] = useState("");
-
   const [place] = useAtom(placeAtom);
   const [loadingCity] = useAtom(loadingCityAtom);
-  // const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
-  //   e
-  // ) => {
-  //   setSearchValue(e.target.value);
-  // };
-
-  // const handleSearchSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-  //   e.preventDefault();
-  //   setSubmittedValue(searchValue);
-  // };
 
   const { isPending, data, refetch } = useQuery<WeatherData>({
     queryKey: ["repoData"],
@@ -140,9 +130,10 @@ export default function Home() {
     );
 
   return (
-    <div className="bg-gradient-to-tr from-[#5050b0] via-[#80387d] via-70% to-[#672746] min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-tr from-[#f8f8fa] via-[#ebecf2] via-70% to-[#8cbad4] dark:bg-gradient-to-tr dark:from-[#11111f] dark:via-[#1c0c1b] dark:via-70% dark:to-[#544d50] text-black transition-all duration-300">
       <div>
         <NavBar location={data?.city.name} />
+        <div className="flex flex-center item-center "></div>
       </div>
       <main className="px-3 max-w-7x1 flex flex-col gap-9 w-full pb-10 pt-4">
         {loadingCity ? (
@@ -151,8 +142,8 @@ export default function Home() {
           <>
             {/* Today's data */}
             <section
-              className="flex gap-1 text2xl items-end text-white relative border-none rounded-2xl"
-              style={{ backgroundImage: "url('/images/background-image.jpg')" }}
+              className="flex gap-1 text-2xl items-end text-white relative border-none rounded-2xl bg-[url('/images/light-theme.jpg')]
+             dark:bg-[url('/images/dark-theme.jpg')]"
             >
               <div className="flex flex-col">
                 <div className="pt-10 pl-20 flex-1  ">
@@ -259,14 +250,16 @@ export default function Home() {
             </section>
             {/* 7 days forecast data */}
             <section className="flex flex-col w-full">
-              <p className=" text-white text-2xl">Forecast (7 days)</p>
+              <p className=" text-black dark:text-white text-2xl">
+                Forecast (7 days)
+              </p>
               {firstDataForEachDate.map((d, i) => (
                 <ForecastWeatherDetail
                   key={i}
                   description={d?.weather[0].description ?? ""}
                   weatherIcon={d?.weather[0].icon ?? "01d"}
-                  date={format(parseISO(d?.dt_txt ?? ""), "dd.MM")}
-                  day={format(parseISO(d?.dt_txt ?? ""), "EEEE")}
+                  date={d?.dt_txt ? format(parseISO(d.dt_txt), "dd.MM") : ""}
+                  day={d?.dt_txt ? format(parseISO(d.dt_txt), "EEEE") : ""}
                   feels_like={d?.main.feels_like ?? 0}
                   temp={d?.main.temp ?? 0}
                   temp_max={d?.main.temp_max ?? 0}
@@ -292,50 +285,3 @@ export default function Home() {
     </div>
   );
 }
-
-const WeatherSkeleton = () => {
-  return (
-    <main className="px-3 max-w-7x1 flex flex-col gap-9 w-full pb-10 pt-4 animate-pulse">
-      {/* Today's data */}
-      <section className="flex gap-1 text2xl items-end text-white relative border-none rounded-2xl bg-gray-700 h-48"></section>
-
-      {/* Time and weather icon */}
-      <section>
-        <div className="flex gap-1 text-2xl items-center">
-          <div className="flex gap-10 sm:gap-15 overflow-x-auto w-full justify-between pr-3">
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className="px-5 flex flex-col justify-center items-center gap-2 text-xs font-semibold"
-              >
-                <div className="w-16 h-6 bg-gray-600 rounded"></div>
-                <div className="w-12 h-12 bg-gray-500 rounded-full"></div>
-                <div className="w-20 h-4 bg-gray-600 rounded"></div>
-                <div className="w-10 h-6 bg-gray-600 rounded"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="px-6 gap-4 justify-between overflow-x-auto flex">
-          <div className="w-full h-24 bg-gray-700 rounded"></div>
-        </div>
-      </section>
-
-      {/* 7 days forecast data */}
-      <section className="flex flex-col w-full">
-        <p className="text-white text-2xl">Forecast (7 days)</p>
-        {[...Array(7)].map((_, i) => (
-          <div
-            key={i}
-            className="flex items-center justify-between p-4 bg-gray-700 rounded mt-2"
-          >
-            <div className="w-24 h-6 bg-gray-600 rounded"></div>
-            <div className="w-12 h-12 bg-gray-500 rounded-full"></div>
-            <div className="w-24 h-6 bg-gray-600 rounded"></div>
-            <div className="w-10 h-6 bg-gray-600 rounded"></div>
-          </div>
-        ))}
-      </section>
-    </main>
-  );
-};

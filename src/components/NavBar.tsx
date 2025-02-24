@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { MdOutlineLocationOn, MdWbSunny } from "react-icons/md";
+import { MdOutlineLocationOn } from "react-icons/md";
 import { LuCloudSun } from "react-icons/lu";
 
 import { MdMyLocation } from "react-icons/md";
@@ -11,6 +11,7 @@ import { useState } from "react";
 import axios from "axios";
 import { loadingCityAtom, placeAtom } from "@/app/atom";
 import { useAtom } from "jotai";
+import { ThemeToggle } from "@/app/theme-toogle";
 
 type Props = { location?: string };
 interface WeatherLocation {
@@ -102,7 +103,9 @@ export default function Navbar({ location }: Props) {
           <p className="flex items-center justify-center gap-2  ">
             <h2 className="text-gray-400 text-3xl">Weather</h2>
             <LuCloudSun className="text-3xl mt-1 text-yellow-300" />
+            <ThemeToggle></ThemeToggle>
           </p>
+
           {/*  */}
           <section className="flex gap-2 items-center">
             <MdMyLocation

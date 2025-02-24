@@ -1,5 +1,6 @@
 "use client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
 
 // import type { Metadata } from "next";
 import "./globals.css";
@@ -21,7 +22,11 @@ export default function RootLayout({
     <html lang="en">
       <QueryClientProvider client={queryClient}>
         <body>
-          <SplashScreenWrapper>{children}</SplashScreenWrapper>
+          <SplashScreenWrapper>
+            <ThemeProvider attribute="class" enableSystem defaultTheme="system">
+              {children}
+            </ThemeProvider>
+          </SplashScreenWrapper>
         </body>
       </QueryClientProvider>
     </html>

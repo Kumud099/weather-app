@@ -14,7 +14,7 @@ export default function SearchBox(props: Props) {
     <form
       onSubmit={props.onSubmit}
       className={cn(
-        "flex relative items-center justify-center h-7 bg-[#2c1b3a] p-2 rounded-md w-full border border-gray-500",
+        "flex relative items-center justify-center h-7 bg-[#4185a4] dark:bg-[#1c1b1e]  p-2 rounded-md w-full border border-blue-500 dark:border-black",
         props.className
       )}
     >
