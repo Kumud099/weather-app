@@ -4,7 +4,6 @@
 import React from "react";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { LuCloudSun } from "react-icons/lu";
-
 import { MdMyLocation } from "react-icons/md";
 import SearchBox from "./SearchBox";
 import { useState } from "react";
@@ -23,7 +22,6 @@ const API_KEY = process.env.NEXT_PUBLIC_WEATHER_KEY;
 export default function Navbar({ location }: Props) {
   const [city, setCity] = useState("");
   const [error, setError] = useState("");
-  //
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [, setPlace] = useAtom(placeAtom);
@@ -36,7 +34,6 @@ export default function Navbar({ location }: Props) {
         const response = await axios.get(
           `https://api.openweathermap.org/data/2.5/find?q=${value}&appid=${API_KEY}`
         );
-
         const suggestions = response.data.list.map(
           (item: WeatherLocation) => item.name
         );
@@ -90,7 +87,6 @@ export default function Navbar({ location }: Props) {
           }, 500);
         } catch (error) {
           console.error(error);
-
           setLoadingCity(false);
         }
       });
