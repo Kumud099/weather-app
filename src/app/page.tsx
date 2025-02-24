@@ -13,7 +13,7 @@ import convertMetersToKm from "@/utils/convertMetersToKm";
 import convertWindSpeed from "@/utils/convertWindSpeed";
 import { useAtom } from "jotai";
 import { loadingCityAtom, placeAtom } from "./atom";
-import { ThemeToggle } from "./theme-toogle";
+
 import WeatherSkeleton from "@/components/WeatherSkeleton";
 
 interface WeatherData {

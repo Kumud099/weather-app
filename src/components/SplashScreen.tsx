@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React from "react";
 
 const SplashScreen = ({ isFadingOut }: { isFadingOut: boolean }) => {
@@ -8,7 +9,12 @@ const SplashScreen = ({ isFadingOut }: { isFadingOut: boolean }) => {
         isFadingOut ? "opacity-0" : "opacity-100"
       }`}
     >
-      <img src="/WeatherIcon.svg" alt="Weather Icon" />
+      <Image
+        src="/WeatherIcon.svg"
+        alt="Weather Icon"
+        width={100}
+        height={100}
+      />
       <h1 className="text-4xl font-bold text-white animate-pulse">WEATHER</h1>
       <h1 className="text-4xl font-bold text-white animate-pulse">FORECAST</h1>
     </div>
